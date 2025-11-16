@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세계 여행 가방 꾸리기 - 비버 챌린지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #98FB98 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #4ECDC4;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .beaver-intro {
+            background: #FFF3CD;
+            border: 3px solid #F0AD4E;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px;
+            position: relative;
+            font-size: 22px;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        .gifts-section {
+            flex: 1;
+            background: #F8F9FA;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .gifts-section h3 {
+            color: #495057;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .gift-item {
+            background: white;
+            border: 3px solid #DEE2E6;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .gift-item:hover, .gift-item:active {
+            transform: translateY(-5px);
+            border-color: #4ECDC4;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .gift-item.selected {
+            border-color: #FF6B6B;
+            background: #FFF5F5;
+            transform: scale(0.95);
+        }
+
+        .gift-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .gift-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .gift-name {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .gift-length {
+            color: #FF6B6B;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .bag-section {
+            flex: 1;
+            background: #E3F2FD;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .bag-title {
+            text-align: center;
+            color: #1976D2;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .bag-container {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            border: 4px solid #654321;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .bag-container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 20px;
+            background: #654321;
+            border-radius: 20px 20px 0 0;
+            border: 3px solid #4A2C17;
+        }
+
+        .bag-container::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 12px;
+            background: #4A2C17;
+            border-radius: 15px;
+        }
+
+        .bag-zipper {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .bag-zipper::before {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: -4px;
+            width: 12px;
+            height: 12px;
+            background: #FFD700;
+            border-radius: 50%;
+            border: 2px solid #FFA500;
+        }
+
+        .bag-slots {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .bag-slot {
+            width: 120px;
+            height: 100px;
+            border: 3px dashed #D4B08A;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+        }
+
+        .bag-slot:hover, .bag-slot:active {
+            border-color: #4ECDC4;
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .bag-slot.drag-over {
+            border-color: #4ECDC4;
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .bag-slot.filled {
+            border-color: #28A745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .slot-number {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            background: #FF6B6B;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .bag-slot .gift-in-bag {
+            text-align: center;
+        }
+
+        .bag-slot .gift-in-bag .gift-icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .bag-slot .gift-in-bag .gift-length {
+            font-size: 12px;
+        }
+
+        .status-panel {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #DEE2E6;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #E9ECEF;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #28A745, #20C997);
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-fill.over-limit {
+            background: linear-gradient(45deg, #DC3545, #FD7E14);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+        }
+
+        .btn-help {
+            background: #6C757D;
+            color: white;
+        }
+
+        .btn-help:hover {
+            background: #5A6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-check {
+            background: #28A745;
+            color: white;
+        }
+
+        .btn-check:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #FFC107;
+            color: #212529;
+        }
+
+        .btn-reset:hover {
+            background: #E0A800;
+            transform: translateY(-2px);
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message.success {
+            background: #28A745;
+        }
+
+        .message.error {
+            background: #DC3545;
+        }
+
+        .message.show {
+            opacity: 1;
+        }
+
+        .help-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .help-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .help-content h3 {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .help-content ul {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .reflection-panel {
+            background: #FFF8DC;
+            border: 3px solid #F0AD4E;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .reflection-panel.show {
+            display: block;
+        }
+
+        .reflection-title {
+            color: #D2691E;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .reflection-question {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #495057;
+        }
+
+        .reflection-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #DEE2E6;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .reflection-input:focus {
+            outline: none;
+            border-color: #4ECDC4;
+        }
+
+        .final-submit-btn {
+            background: #FF6B6B;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .final-submit-btn:hover {
+            background: #FF5252;
+            transform: translateY(-2px);
+        }
+
+        .feedback {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+            display: block;
+        }
+
+        .feedback.complete {
+            background: #D1ECF1;
+            color: #0C5460;
+            border: 1px solid #BEE5EB;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .gifts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .bag-slots {
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .bag-slot {
+                width: 80px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 세계 여행 가방 꾸리기 대작전! 🎒</h1>
+            <p>비버 개운이와 함께 세계 각국의 선물을 가방에 담아보세요!</p>
+        </div>
+
+        <div class="beaver-intro">
+            <div style="display: inline-block; width: 100%;">
+                안녕, 친구들! 나는 용감한 여행가 비버 개운이야!<br>
+                내 여행 가방 길이는 <strong style="color: #FF6B6B;">30cm</strong>인데, 선물 <strong style="color: #FF6B6B;">3개</strong>를 담고 싶어!<br>
+                선물들의 총 길이가 여행 가방 길이에 가장 가깝도록 도와줄 수 있니?
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="gifts-section">
+                <h3>🎁 세계 각국의 멋진 선물들</h3>
+                <div class="gifts-grid" id="giftsGrid">
+                    <!-- 선물들이 JavaScript로 동적 생성됩니다 -->
+                </div>
+            </div>
+
+            <div class="bag-section">
+                <div class="bag-title">🎒 나의 여행 가방 (최대 30cm, 물건 3개)</div>
+                
+                <div class="bag-container">
+                    <div class="bag-zipper"></div>
+                    <div class="bag-slots" id="bagSlots">
+                        <div class="bag-slot" data-slot="0">
+                            <div class="slot-number">1</div>
+                            <div class="placeholder">첫 번째<br>선물</div>
+                        </div>
+                        <div class="bag-slot" data-slot="1">
+                            <div class="slot-number">2</div>
+                            <div class="placeholder">두 번째<br>선물</div>
+                        </div>
+                        <div class="bag-slot" data-slot="2">
+                            <div class="slot-number">3</div>
+                            <div class="placeholder">세 번째<br>선물</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-panel">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    
+                    <div class="buttons">
+                        <button class="btn btn-help" onclick="showHelp()">💡 도움말</button>
+                        <button class="btn btn-check" onclick="checkAnswer()">✅ 결과 확인</button>
+                        <button class="btn btn-reset" onclick="resetBag()">🔄 다시하기</button>
+                    </div>
+                </div>
+
+                <div class="reflection-panel" id="reflectionPanel">
+                    <div class="reflection-title">🤔 생각해보기</div>
+                    
+                    <div class="reflection-question">
+                        <strong>선물 3가지의 총 길이는 몇 cm인가요?</strong><br>
+                        답: <input type="text" class="reflection-input" id="totalLengthAnswer" oninput="checkTotalLength()" onblur="checkTotalLength()"> cm
+                        <div class="feedback" id="totalLengthFeedback"></div>
+                    </div>
+                    
+                    <div class="reflection-question">
+                        <strong>내 여행 가방 길이 30cm에서 남은 공간은 몇 cm 인가요?</strong><br>
+                        답: <input type="text" class="reflection-input" id="remainingSpaceAnswer" oninput="checkRemainingSpace()" onblur="checkRemainingSpace()"> cm
+                        <div class="feedback" id="remainingSpaceFeedback"></div>
+                    </div>
+                    
+                    <div class="reflection-question">
+                        <strong>이 선택에 만족하나요? 더 좋은 답이 있다면 무엇일까요?</strong><br>
+                        답: <input type="text" class="reflection-input" id="satisfactionAnswer" oninput="checkSatisfaction()" onblur="checkSatisfaction()">
+                        <div class="feedback" id="satisfactionFeedback"></div>
+                    </div>
+                    
+                    <button class="final-submit-btn" onclick="finalSubmit()" id="finalSubmitBtn" disabled>
+                        🎯 나의 최종 선택 제출하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="help-modal" id="helpModal">
+        <div class="help-content">
+            <h3>🤔 어떻게 하는 건가요?</h3>
+            <ul>
+                <li>🎁 왼쪽에 있는 선물을 마우스로 클릭하고 끌어서 오른쪽 가방에 넣어보세요!</li>
+                <li>📏 선물들의 총 길이가 30cm를 넘지 않아야 해요!</li>
+                <li>🔢 가방에는 정확히 3개의 선물만 들어가야 해요!</li>
+                <li>✨ 가장 효율적인 조합을 찾아보세요!</li>
+            </ul>
+            <button class="btn btn-help" onclick="hideHelp()">알았어요!</button>
+        </div>
+    </div>
+
+    <script>
+        // 선물 데이터
+        const gifts = [
+            {id: 1, name: "프랑스의 바게트 모형", length: 5, icon: "🥖", country: "프랑스"},
+            {id: 2, name: "가나의 초콜릿", length: 12, icon: "🍫", country: "가나"},
+            {id: 3, name: "브라질의 축구공", length: 8, icon: "⚽", country: "브라질"},
+            {id: 4, name: "인도의 코끼리 인형", length: 15, icon: "🐘", country: "인도"},
+            {id: 5, name: "미국의 자유의 여신상", length: 10, icon: "🗽", country: "미국"},
+            {id: 6, name: "중국의 판다 인형", length: 7, icon: "🐼", country: "중국"},
+            {id: 7, name: "멕시코의 타코 모형", length: 6, icon: "🌮", country: "멕시코"},
+            {id: 8, name: "영국의 런던 버스", length: 9, icon: "🚌", country: "영국"},
+            {id: 9, name: "이탈리아의 피자 모형", length: 11, icon: "🍕", country: "이탈리아"}
+        ];
+
+        let bagContents = [null, null, null];
+        let totalLength = 0;
+
+        // 개별 답안 검증 함수들 (최우선 정의)
+        function checkTotalLength() {
+            const input = document.getElementById('totalLengthAnswer');
+            const feedback = document.getElementById('totalLengthFeedback');
+            
+            if (!input || !feedback) return false;
+            
+            const value = input.value.trim();
+            
+            if (!value) {
+                feedback.style.display = 'none';
+                updateSubmitButton();
+                return false;
+            }
+            
+            const selectedGifts = bagContents.filter(gift => gift !== null);
+            const actualTotalLength = selectedGifts.reduce((sum, gift) => sum + gift.length, 0);
+            const studentAnswer = parseInt(value);
+            
+            if (studentAnswer === actualTotalLength) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✅ 정답이에요! 계산을 정확히 했어요!';
+                updateSubmitButton();
+                return true;
+            } else {
+                feedback.className = 'feedback incorrect';
+                const giftLengths = selectedGifts.map(gift => gift.length).join(' + ');
+                feedback.textContent = `❌ 다시 계산해보세요! 힌트: ${giftLengths} = ${actualTotalLength}cm`;
+                updateSubmitButton();
+                return false;
+            }
+        }
+
+        function checkRemainingSpace() {
+            const input = document.getElementById('remainingSpaceAnswer');
+            const feedback = document.getElementById('remainingSpaceFeedback');
+            
+            if (!input || !feedback) return false;
+            
+            const value = input.value.trim();
+            
+            if (!value) {
+                feedback.style.display = 'none';
+                updateSubmitButton();
+                return false;
+            }
+            
+            const selectedGifts = bagContents.filter(gift => gift !== null);
+            const actualTotalLength = selectedGifts.reduce((sum, gift) => sum + gift.length, 0);
+            const actualRemainingSpace = 30 - actualTotalLength;
+            const studentAnswer = parseInt(value);
+            
+            if (studentAnswer === actualRemainingSpace) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✅ 정답이에요! 빼기 계산을 정확히 했어요!';
+                updateSubmitButton();
+                return true;
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `❌ 다시 계산해보세요! 힌트: 30cm - ${actualTotalLength}cm = ${actualRemainingSpace}cm`;
+                updateSubmitButton();
+                return false;
+            }
+        }
+
+        function checkSatisfaction() {
+            const input = document.getElementById('satisfactionAnswer');
+            const feedback = document.getElementById('satisfactionFeedback');
+            
+            if (!input || !feedback) return false;
+            
+            const value = input.value.trim();
+            
+            if (!value) {
+                feedback.style.display = 'none';
+                updateSubmitButton();
+                return false;
+            }
+            
+            if (value.length >= 5) {
+                feedback.className = 'feedback complete';
+                feedback.textContent = '✅ 좋은 생각이에요! 자신의 의견을 잘 표현했어요!';
+                updateSubmitButton();
+                return true;
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = '💭 조금 더 자세히 써보세요! 어떤 생각인지 궁금해요!';
+                updateSubmitButton();
+                return false;
+            }
+        }
+
+        function updateSubmitButton() {
+            const totalInput = document.getElementById('totalLengthAnswer');
+            const remainingInput = document.getElementById('remainingSpaceAnswer');
+            const satisfactionInput = document.getElementById('satisfactionAnswer');
+            const submitBtn = document.getElementById('finalSubmitBtn');
+            
+            if (!totalInput || !remainingInput || !satisfactionInput || !submitBtn) return;
+            
+            // 각 답의 상태를 단순히 확인
+            const totalValue = totalInput.value.trim();
+            const remainingValue = remainingInput.value.trim();
+            const satisfactionValue = satisfactionInput.value.trim();
+            
+            // 실제 정답 계산
+            const selectedGifts = bagContents.filter(gift => gift !== null);
+            const actualTotalLength = selectedGifts.reduce((sum, gift) => sum + gift.length, 0);
+            const actualRemainingSpace = 30 - actualTotalLength;
+            
+            // 각 답이 정확한지 확인
+            const totalCorrect = totalValue && parseInt(totalValue) === actualTotalLength;
+            const remainingCorrect = remainingValue && parseInt(remainingValue) === actualRemainingSpace;
+            const satisfactionComplete = satisfactionValue && satisfactionValue.length >= 5;
+            
+            if (totalCorrect && remainingCorrect && satisfactionComplete) {
+                submitBtn.disabled = false;
+                submitBtn.style.background = '#FF6B6B';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.background = '#CCC';
+            }
+        }
+
+        // 전역 변수 추가
+        let selectedGift = null;
+        let isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        // 선물 그리드 생성
+        function createGiftsGrid() {
+            const grid = document.getElementById('giftsGrid');
+            gifts.forEach(gift => {
+                const giftElement = document.createElement('div');
+                giftElement.className = 'gift-item';
+                giftElement.draggable = !isMobile; // 모바일에서는 드래그 비활성화
+                giftElement.dataset.giftId = gift.id;
+                giftElement.innerHTML = `
+                    <div class="gift-icon">${gift.icon}</div>
+                    <div class="gift-name">${gift.name}</div>
+                    <div class="gift-length">${gift.length}cm</div>
+                `;
+                
+                // 데스크톱 이벤트
+                if (!isMobile) {
+                    giftElement.addEventListener('dragstart', handleDragStart);
+                    giftElement.addEventListener('dragend', handleDragEnd);
+                }
+                
+                // 모바일/클릭 이벤트
+                giftElement.addEventListener('click', handleGiftClick);
+                giftElement.addEventListener('touchstart', handleGiftClick);
+                
+                grid.appendChild(giftElement);
+            });
+        }
+
+        // 모바일/클릭용 선물 선택
+        function handleGiftClick(e) {
+            e.preventDefault();
+            const giftId = parseInt(e.currentTarget.dataset.giftId);
+            
+            // 이미 가방에 있는 선물인지 확인
+            for (let i = 0; i < bagContents.length; i++) {
+                if (bagContents[i] && bagContents[i].id === giftId) {
+                    showMessage('이미 가방에 들어있는 선물이에요!', 'error');
+                    return;
+                }
+            }
+            
+            // 이전 선택 해제
+            document.querySelectorAll('.gift-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // 현재 선물 선택
+            e.currentTarget.classList.add('selected');
+            selectedGift = giftId;
+            
+            if (isMobile) {
+                showMessage('선물을 선택했어요! 이제 가방의 빈 칸을 터치하세요!', 'success');
+            }
+        }
+
+        // 가방 슬롯 이벤트 리스너 설정
+        function setupBagSlots() {
+            const slots = document.querySelectorAll('.bag-slot');
+            slots.forEach(slot => {
+                // 데스크톱 드래그앤드롭
+                if (!isMobile) {
+                    slot.addEventListener('dragover', handleDragOver);
+                    slot.addEventListener('drop', handleDrop);
+                    slot.addEventListener('dragleave', handleDragLeave);
+                }
+                
+                // 모바일/클릭 이벤트
+                slot.addEventListener('click', handleSlotClick);
+                slot.addEventListener('touchstart', handleSlotClick);
+            });
+        }
+
+        // 드래그 시작
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.giftId);
+            e.target.classList.add('dragging');
+        }
+
+        // 드래그 끝
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        // 드래그 오버
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.target.closest('.bag-slot').classList.add('drag-over');
+        }
+
+        // 드래그 떠남
+        function handleDragLeave(e) {
+            e.target.closest('.bag-slot').classList.remove('drag-over');
+        }
+
+        // 드롭 처리
+        function handleDrop(e) {
+            e.preventDefault();
+            const slot = e.target.closest('.bag-slot');
+            slot.classList.remove('drag-over');
+            
+            const giftId = parseInt(e.dataTransfer.getData('text/plain'));
+            const slotIndex = parseInt(slot.dataset.slot);
+            
+            addGiftToBag(giftId, slotIndex);
+        }
+
+        // 슬롯 클릭 (비우기 또는 모바일용 넣기)
+        function handleSlotClick(e) {
+            e.preventDefault();
+            const slot = e.target.closest('.bag-slot');
+            const slotIndex = parseInt(slot.dataset.slot);
+            
+            // 모바일에서 선물이 선택된 상태라면 넣기
+            if (selectedGift && bagContents[slotIndex] === null) {
+                addGiftToBag(selectedGift, slotIndex);
+                
+                // 선택 상태 해제
+                document.querySelectorAll('.gift-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                selectedGift = null;
+                return;
+            }
+            
+            // 이미 선물이 있다면 비우기
+            if (bagContents[slotIndex] !== null) {
+                removeGiftFromBag(slotIndex);
+                
+                // 선택 상태 해제
+                document.querySelectorAll('.gift-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                selectedGift = null;
+            }
+        }
+
+        // 가방에 선물 추가
+        function addGiftToBag(giftId, slotIndex) {
+            const gift = gifts.find(g => g.id === giftId);
+            const slot = document.querySelector(`[data-slot="${slotIndex}"]`);
+            
+            // 이미 다른 슬롯에 있는 선물인지 확인
+            for (let i = 0; i < bagContents.length; i++) {
+                if (bagContents[i] && bagContents[i].id === giftId) {
+                    showMessage('이미 가방에 들어있는 선물이에요!', 'error');
+                    return;
+                }
+            }
+            
+            // 슬롯이 이미 차있다면 기존 선물 제거
+            if (bagContents[slotIndex] !== null) {
+                removeGiftFromBag(slotIndex);
+            }
+            
+            bagContents[slotIndex] = gift;
+            slot.classList.add('filled');
+            slot.innerHTML = `
+                <div class="slot-number">${slotIndex + 1}</div>
+                <div class="gift-in-bag">
+                    <div class="gift-icon">${gift.icon}</div>
+                    <div class="gift-length">${gift.length}cm</div>
+                </div>
+            `;
+            
+            updateTotalLength();
+        }
+
+        // 가방에서 선물 제거
+        function removeGiftFromBag(slotIndex) {
+            const slot = document.querySelector(`[data-slot="${slotIndex}"]`);
+            bagContents[slotIndex] = null;
+            slot.classList.remove('filled');
+            slot.innerHTML = `
+                <div class="slot-number">${slotIndex + 1}</div>
+                <div class="placeholder">${['첫 번째', '두 번째', '세 번째'][slotIndex]}<br>선물</div>
+            `;
+            
+            updateTotalLength();
+        }
+
+        // 총 길이 업데이트
+        function updateTotalLength() {
+            totalLength = bagContents.reduce((sum, gift) => {
+                return sum + (gift ? gift.length : 0);
+            }, 0);
+            
+            const progressFill = document.getElementById('progressFill');
+            const percentage = Math.min((totalLength / 30) * 100, 100);
+            progressFill.style.width = percentage + '%';
+            
+            if (totalLength > 30) {
+                progressFill.classList.add('over-limit');
+            } else {
+                progressFill.classList.remove('over-limit');
+            }
+        }
+
+        // 정답 확인
+        function checkAnswer() {
+            const filledSlots = bagContents.filter(gift => gift !== null).length;
+            
+            if (filledSlots !== 3) {
+                showMessage('가방에 선물을 3개 넣어야 해요!', 'error');
+                return;
+            }
+            
+            if (totalLength > 30) {
+                showMessage('아쉽지만 총 길이가 30cm를 넘었어요! 다시 도전해보세요!', 'error');
+                return;
+            }
+            
+            showMessage('🎉 축하해요! 개운이의 가방에 선물을 모두 담았어요! 이제 생각해보기를 해보세요!', 'success');
+            
+            // 생각해보기 패널 표시
+            document.getElementById('reflectionPanel').classList.add('show');
+        }
+
+        // 최종 제출 (단순화)
+        function finalSubmit() {
+            const selectedGifts = bagContents.filter(gift => gift !== null);
+            const actualTotalLength = selectedGifts.reduce((sum, gift) => sum + gift.length, 0);
+            const actualRemainingSpace = 30 - actualTotalLength;
+            
+            let feedbackMessage = '🎉 모든 계산을 정확히 완료했어요! 훌륭해요!\n\n';
+            
+            if (actualRemainingSpace === 0) {
+                feedbackMessage += '🌟🎉 와! 정말 대단해요! 가방을 딱 30cm로 완벽하게 채웠어요! 당신은 진정한 여행 전문가예요! 🏆✨';
+            } else if (actualRemainingSpace <= 2) {
+                feedbackMessage += `🎯 정말 잘했어요! 남은 공간이 ${actualRemainingSpace}cm밖에 안 되네요! 거의 완벽해요! 👏`;
+            } else if (actualRemainingSpace <= 5) {
+                feedbackMessage += `😊 좋은 선택이에요! 남은 공간은 ${actualRemainingSpace}cm예요. 조금 더 효율적으로 채울 수도 있겠어요! 💪`;
+            } else {
+                feedbackMessage += `🤔 남은 공간이 ${actualRemainingSpace}cm나 있어요! 더 큰 선물이나 다른 조합을 시도해보는 건 어떨까요? 🎁`;
+            }
+            
+            showLongMessage(feedbackMessage);
+            
+            // 입력 필드들을 읽기 전용으로 만들기
+            const totalInput = document.getElementById('totalLengthAnswer');
+            const remainingInput = document.getElementById('remainingSpaceAnswer');
+            const satisfactionInput = document.getElementById('satisfactionAnswer');
+            const submitBtn = document.querySelector('.final-submit-btn');
+            
+            if (totalInput) totalInput.readOnly = true;
+            if (remainingInput) remainingInput.readOnly = true;
+            if (satisfactionInput) satisfactionInput.readOnly = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '✅ 제출 완료!';
+            }
+        }
+
+        // 긴 메시지 표시 (5초간)
+        function showLongMessage(text) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = 'message success';
+            message.classList.add('show');
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 5000);
+        }
+
+        // 가방 리셋
+        function resetBag() {
+            for (let i = 0; i < 3; i++) {
+                removeGiftFromBag(i);
+            }
+            
+            // 생각해보기 패널 숨기기
+            const reflectionPanel = document.getElementById('reflectionPanel');
+            if (reflectionPanel) {
+                reflectionPanel.classList.remove('show');
+            }
+            
+            // 입력 필드들 초기화
+            const totalInput = document.getElementById('totalLengthAnswer');
+            const remainingInput = document.getElementById('remainingSpaceAnswer');
+            const satisfactionInput = document.getElementById('satisfactionAnswer');
+            const submitBtn = document.querySelector('.final-submit-btn');
+            
+            if (totalInput) {
+                totalInput.value = '';
+                totalInput.readOnly = false;
+            }
+            if (remainingInput) {
+                remainingInput.value = '';
+                remainingInput.readOnly = false;
+            }
+            if (satisfactionInput) {
+                satisfactionInput.value = '';
+                satisfactionInput.readOnly = false;
+            }
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🎯 나의 최종 선택 제출하기';
+            }
+            
+            // 피드백 숨기기
+            const feedbacks = document.querySelectorAll('.feedback');
+            feedbacks.forEach(feedback => {
+                feedback.style.display = 'none';
+            });
+        }
+
+        // 메시지 표시
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.classList.add('show');
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 3000);
+        }
+
+        // 도움말 표시
+        function showHelp() {
+            document.getElementById('helpModal').style.display = 'flex';
+        }
+
+        // 도움말 숨기기
+        function hideHelp() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+
+        // 초기화
+        function init() {
+            createGiftsGrid();
+            setupBagSlots();
+            updateTotalLength();
+        }
+
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
