@@ -599,7 +599,7 @@
                     </div>
                     
                     <div class="reflection-question">
-                        <strong>이 선택에 만족하나요? 더 좋은 답이 있다면 무엇일까요?</strong><br>
+                        <strong>이 선택에 만족하나요? 더 좋은 답이 있다면 무엇일까요? (5글자 이상 입력)</strong><br>
                         답: <input type="text" class="reflection-input" id="satisfactionAnswer" oninput="checkSatisfaction()" onblur="checkSatisfaction()">
                         <div class="feedback" id="satisfactionFeedback"></div>
                     </div>
@@ -730,7 +730,7 @@
                 return true;
             } else {
                 feedback.className = 'feedback incorrect';
-                feedback.textContent = '💭 조금 더 자세히 써보세요! 어떤 생각인지 궁금해요!';
+                feedback.textContent = '💭 조금 더 자세히 써보세요! 5글자 이상 입력해주세요!';
                 updateSubmitButton();
                 return false;
             }
